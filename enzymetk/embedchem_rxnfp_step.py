@@ -17,13 +17,14 @@ logger.setLevel(logging.INFO)
 class RxnFP(Step):
     
     def __init__(self, smiles_col: str, num_threads: 1, 
-                 env_name = 'rxnfp', venv_name = None):
+                 env_name = 'rxnfp', venv_name = None, tmp_dir=None):
         super().__init__()
+        self.tmp_dir = tmp_dir
         self.value_col = smiles_col
         self.num_threads = num_threads or 1
         self.conda = env_name
         self.env_name = env_name
-        self.venv = venv_name if venv_name else f'{env_name}/bin/python'
+        self.venv = venv_name
 
     def install(self, env_args=['--python', '3.8']):
         # e.g. env args could by python=='3.1.1.
@@ -53,21 +54,21 @@ class RxnFP(Step):
         return output_filename
     
     def execute(self, df: pd.DataFrame) -> pd.DataFrame:
-        with TemporaryDirectory() as tmp_dir:
-            if self.num_threads > 1:
-                output_filenames = []
-                df_list = np.array_split(df, self.num_threads)
-                for df_chunk in tqdm(df_list, total=len(df_list)):
-                    output_filenames.append(self.__execute(df_chunk, tmp_dir))
-                    
-                df = pd.DataFrame()
-                for p in output_filenames:
-                    with open(f'{p}', 'rb') as file:
-                        tmp_df = pickle.load(file)
-                    df = pd.concat([df, tmp_df])
-                return df
-            
-            else:
-                output_filename = self.__execute(df, tmp_dir)
-                with open(f'{output_filename}', 'rb') as file:
-                    return pickle.load(file)
+        tmp_dir = self.tmp_dir if self.tmp_dir else TemporaryDirectory()
+        if self.num_threads > 1:
+            output_filenames = []
+            df_list = np.array_split(df, self.num_threads)
+            for df_chunk in tqdm(df_list, total=len(df_list)):
+                output_filenames.append(self.__execute(df_chunk, tmp_dir))
+                
+            df = pd.DataFrame()
+            for p in output_filenames:
+                with open(f'{p}', 'rb') as file:
+                    tmp_df = pickle.load(file)
+                df = pd.concat([df, tmp_df])
+            return df
+        
+        else:
+            output_filename = self.__execute(df, tmp_dir)
+            with open(f'{output_filename}', 'rb') as file:
+                return pickle.load(file)

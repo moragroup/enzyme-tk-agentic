@@ -25,7 +25,7 @@ If you want to try a colab notebook here is an example: ([colab](https://github.
 ```bash
 conda create --name enzymetk python==3.10 -y
 # Install torch for your specific cuda version
-pip install torch torchvision #--index-url https://download.pytorch.org/whl/cu130
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu130
 pip install enzymetk==0.0.7
 ```
 
@@ -39,7 +39,7 @@ For installation instructions check out the [wiki](https://github.com/moragroup/
 For this clone the repo and then install the requirements for the specific modules you use 
 ```bash
 git clone git@github.com:ArianeMora/enzyme-tk.git
-cd enzymetk/conda_envs/ # would recommend looking at thes
+cd enzymetk/conda_envs/ # would recommend looking at these
 # e.g. to install all from within that folder you would do
 source install_all.sh
 ```

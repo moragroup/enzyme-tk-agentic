@@ -20,4 +20,5 @@ df = pd.DataFrame(rows, columns=[id_col, label_col, seq_col])
 reference_database = '/mnt/labs/data/mora/data/pdb_foldseek/pdb'
 df << (FoldSeek(id_col, seq_col, reference_database, query_type='seqs', tmp_dir='tmp/') >> Save(f'{output_dir}pdb_files.pkl'))
 # For checking against a reference database that already exists
-df << (FoldSeek('id', 'pdbs', reference_database) >> Save(f'{output_dir}pdb_files.pkl'))
+# Would need to add in the structures here..
+# df << (FoldSeek('id', 'pdbs', reference_database) >> Save(f'{output_dir}pdb_files.pkl'))
