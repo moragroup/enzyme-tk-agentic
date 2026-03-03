@@ -2,6 +2,15 @@
 
 Enzyme-tk is a collection of tools for enzyme engineering, setup as interoperable modules that act on dataframes. These modules are designed to be imported into pipelines for specific function. For this reason, `steps` as each module is called (e.g. finding similar proteins with `BLAST` would be considered a step) are designed to be as light as possible. An example of a pipeline is the [annotate-e](https://github.com/ArianeMora/annotate-e)  ` pipeline, this acts to annotate a fasta with an ensemble of methods (each is designated as an Enzyme-tk step). 
 
+### Quick Start Colab notebook
+
+If you want to try a colab notebook here is an example: ([colab](https://github.com/ArianeMora/enzyme-tk/blob/main/Enzyme_tk_example.ipynb))
+
+Data link: ```git clone https://huggingface.co/datasets/arianemora/enzyme-tk```
+
+### Moving to a new home: 
+
+Since I started at AITHYRA this is migrating to a new home at [moragroup/enzyme-tk](https://github.com/moragroup/enzyme-tk/wiki/Installations) so will be maintaied there.
 
 ### Quick Start Colab notebook
 
@@ -15,23 +24,26 @@ If you want to try a colab notebook here is an example: ([colab](https://github.
 
 ```bash
 conda create --name enzymetk python==3.10 -y
-pip install enzymetk
 # Install torch for your specific cuda version
 pip install torch torchvision #--index-url https://download.pytorch.org/whl/cu130
+pip install enzymetk==0.0.7
 ```
 
 ### Install only the specific requirements you need (recommended) 
 
 For installation instructions check out the [wiki](https://github.com/moragroup/enzyme-tk/wiki/Installations).
 
-Otherwise you can also install by looking in the conda envs folders (the above is recommended).
+
+### Install only the specific requirements you need (recomended) 
+
+For this clone the repo and then install the requirements for the specific modules you use 
 ```bash
 git clone git@github.com:ArianeMora/enzyme-tk.git
 cd enzymetk/conda_envs/ # would recommend looking at thes
 # e.g. to install all from within that folder you would do
 source install_all.sh
 ```
-
+For more extensive installation instructions check out the [wiki](https://github.com/moragroup/enzyme-tk/wiki/Installations).
 ## Usage
 
 If you have any issues at all just email me using my caltech email: `amora at aithyra . ac . at`
