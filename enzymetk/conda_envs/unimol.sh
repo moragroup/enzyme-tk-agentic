@@ -7,3 +7,4 @@ conda create -n unimol --channel conda-forge python=3.11 pip -y
 conda activate unimol
 pip install unimol_tools
 pip install huggingface_hub
+pip install enzymetk
