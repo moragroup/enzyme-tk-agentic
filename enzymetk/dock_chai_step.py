@@ -7,7 +7,7 @@ import numpy as np
 try:
     from docko.chai import run_chai
 except ImportError as e:
-    print("Chai: Needs docko package. Install with: pip install docko.")    
+    print(f"Chai: Needs docko package. Install with: pip install docko. Error: {e}")    
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)

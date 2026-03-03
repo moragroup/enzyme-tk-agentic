@@ -11,7 +11,7 @@ logger.setLevel(logging.INFO)
 try:
     from docko.boltz import run_boltz_affinity
 except ImportError as e:
-    print("Boltz: Needs docko package. Install with: pip install docko.")    
+    print("Boltz: Needs docko package.Install with: pip install docko. Error: {e}")   
 
     
 class Boltz(Step):

@@ -18,15 +18,19 @@ logger.setLevel(logging.INFO)
 class ActiveSitePred(Step):
     
     def __init__(self, id_col: str, seq_col: str, num_threads: int = 1, 
-                 esm2_model = 'esm2_t36_3B_UR50D', tmp_dir: str = None, args=None):
+                 esm2_model = 'esm2_t36_3B_UR50D', tmp_dir: str = None, args=None, 
+                 env_name = 'enzymetk'):
+        super().__init__()
         self.id_col = id_col
         self.seq_col = seq_col  
         self.num_threads = num_threads or 1
         self.esm2_model = esm2_model
         self.tmp_dir = tmp_dir
-        self.args = None
         self.logger = logging.getLogger(__name__)
         print('Predicting Active Sites using Squidly')
+        self.conda = env_name
+        self.env_name = env_name
+        self.args = args
         
     def __to_fasta(self, df: pd.DataFrame, tmp_dir: str):
         tmp_label = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
@@ -51,7 +55,7 @@ class ActiveSitePred(Step):
             print(result.stderr)
         else:
             self.logger.info(result.stdout)
-        output_filename = os.path.join(tmp_dir, 'squidly_ensemble.csv')
+        output_filename = os.path.join(tmp_dir, 'squidly_ensemble.pkl')
         return output_filename
     
     def execute(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -69,10 +73,10 @@ class ActiveSitePred(Step):
                 df = pd.DataFrame()
                 print(output_filenames)
                 for p in output_filenames:
-                    sub_df = pd.read_csv(p)
+                    sub_df = pd.read_pickle(p)
                     df = pd.concat([df, sub_df])
                 return df
             
             else:
                 output_filename = self.__execute(df, tmp_dir)
-                return pd.read_csv(output_filename)
+                return pd.read_pickle(output_filename)
