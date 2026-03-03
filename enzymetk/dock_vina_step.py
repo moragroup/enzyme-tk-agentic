@@ -11,7 +11,7 @@ from multiprocessing.dummy import Pool as ThreadPool
 try:
     from docko.docko import *
 except ImportError as e:
-    print("Vina: Needs docko package. Install with: pip install docko.")    
+    print("Vina: Needs docko package. Install with: pip install docko. Error: {e}")   
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)

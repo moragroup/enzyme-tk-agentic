@@ -1,6 +1,6 @@
 #!/bin/bash
 # CARE processing
-conda create -n CARE_processing python=3.8 -y
+conda create -n CARE_processing python=3.8 pip -y
 # Doesn't like working with conda init
 # CONDA_BASE=$(conda info --base)
 # source $CONDA_BASE/etc/profile.d/conda.sh

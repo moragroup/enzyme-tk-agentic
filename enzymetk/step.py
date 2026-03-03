@@ -103,11 +103,15 @@ class Step():
         result = None
         start = timeit.default_timer()
         # Prioitize running in a venv if we have it
-        if self.venv:
-            cmd = [self.venv] + cmd
-            u.warn_p(['Running in venv:', self.venv])
-        elif self.conda:
-            cmd = ['conda', 'run', '-n', self.conda] + cmd
+        try:
+            if self.venv:
+                cmd = [self.venv] + cmd
+                u.warn_p(['Running in venv:', self.venv])
+            elif self.conda:
+                cmd = ['conda', 'run', '-n', self.conda] + cmd
+        except Exception as e:
+            u.warn_p(['Error running in venv/conda, running command without venv/conda:', e])
+            
         u.dp(['Running command', ' '.join([str(c) for c in cmd])])
 
         result = subprocess.run(cmd, capture_output=True, 

@@ -2,7 +2,7 @@
 # Clean
 git clone https://github.com/tttianhao/CLEAN.git
 # Also install porechop
-conda create -n clean python==3.10.4 -y
+conda create -n clean python==3.10.4 pip -y
 # Doesn't like working with conda init
 CONDA_BASE=$(conda info --base)
 source $CONDA_BASE/etc/profile.d/conda.sh

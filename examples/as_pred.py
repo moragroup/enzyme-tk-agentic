@@ -1,21 +1,12 @@
-import sys
-
-sys.path.append('../enzymetk/')
 from enzymetk.predict_catalyticsite_step import ActiveSitePred
 from enzymetk.save_step import Save
 import pandas as pd
-import os
-os.environ['MKL_THREADING_LAYER'] = 'GNU'
 
-# This should be where you downloaded the data from zotero, there is a folder in there called AS_inference
-# This contains the models and the data needed to run the tool
-#squidly_dir = '/disk1/share/software/AS_inference/'
-squidly_dir = '/disk1/ariane/vscode/enzyme-tk/models/squidly_final_models/'
 num_threads = 1
 id_col = 'Entry'
 seq_col = 'Sequence'
 rows = [['AXE2', 'MKIGSGEKLLFIGDSITDCGRARPEGEGSFGALGTGYVAYVVGLLQAVYPELGIRVVNKGISGNTVRDLKARWEEDVIAQKPDWVSIMIGINDVWRQYDLPFMKEKHVYLDEYEATLRSLVLETKPLVKGIILMTPFYIEGNEQDPMRRTMDQYGRVVKQIAEETNSLFVDTQAAFNEVLKTLYPAALAWDRVHPSVAGHMILARAFLREIGFEWVRSR'], 
         ['H7C0D0', 'XRAHREIKDIFYKAIQKRRQSQEKIDDILQTLLDATYKDGRPLTDDEVAGMLIGLLLAGQHTSSTTSAWMGFFLARDKTLQKKCYLEQKTVCGENLPPLTYDQLKDLNLLDRCIKETLRLRPPIMIMMRMARTPQTVAGYTIPPGHQDNPASGEKFAYVPFGAGRHRCIGENFAYVQIKTIWSTMLRLYEFDLIDGYFPTVNYTTMIHTPENPVIRYKRRSK']]
 df = pd.DataFrame(rows, columns=[id_col, seq_col])
+df = (df << (ActiveSitePred(id_col, seq_col, num_threads, tmp_dir='tmp/', env_name='squidly') >> Save('squidly_as_pred_XXXX.pkl')))
 print(df)
-df << (ActiveSitePred(id_col, seq_col, num_threads, tmp_dir='tmp/') >> Save('tmp/squidly_as_pred_XXXX.pkl'))

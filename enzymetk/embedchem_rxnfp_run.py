@@ -9,7 +9,7 @@ def run_rxnfp(output_filename, input_filename, label):
     rxns = df[label].values
     model, tokenizer = get_default_model_and_tokenizer()
     rxnfp_generator = RXNBERTFingerprintGenerator(model, tokenizer)
-    fps = rxnfp_generator.convert_batch(rxns)
+    fps = rxnfp_generator.convert(rxns)
     df['rxnfp'] = fps
     with open(output_filename, 'wb') as file:
         pickle.dump(df, file)

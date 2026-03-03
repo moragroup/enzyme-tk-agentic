@@ -31,7 +31,8 @@ def process_clustering(filename, df, id_column_name):
 class FoldSeek(Step):
     
     def __init__(self, id_column_name: str, query_column_name: str, reference_database: str, method='search', query_type='structures', 
-                 args=None, num_threads=1, tmp_dir: str = None):
+                 args=None, num_threads=1, tmp_dir: str = None, venv_name = 'enzymetk', env_name = None):
+        super().__init__()
         self.query_column_name = query_column_name
         self.id_column_name = id_column_name
         self.reference_database = reference_database # pdb should be the default
@@ -40,6 +41,8 @@ class FoldSeek(Step):
         self.args = args
         self.num_threads = num_threads
         self.query_type = query_type
+        self.conda = env_name
+        self.env_name = env_name
         if self.method not in ['search', 'cluster']:
             print('Method must be in "search" or "cluster". Will likely fail... ')
         if self.query_type not in ['seqs', 'structures']:

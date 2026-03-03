@@ -1,5 +1,3 @@
-import sys
-
 from enzymetk.embedprotein_esm_step import EmbedESM
 from enzymetk.save_step import Save
 import pandas as pd
@@ -12,5 +10,8 @@ rows = [['AXE2_TALPU', '10', 'MHSKFFAASLLGLGAAAIPLEGVMEKRSCPAIHVFGARETTASPGYGSSS
         ['AXE7A_XYLR2', '1', 'MFNFAPKQTTEMKKLLFTLVFVLGSMATALAENYPYRADYLWLTVPNHADWLYKTGERAKVEVSFCLYGMPQNVEVAYEIGPDMMPATSSGKVTLKNGRAVIDMGTMKKPGFLDMRLSVDGKYQHHVKVGFSPELLKPYTKNPQDFDAFWKANLDEARKTPVSVSCNKVDKYTTDAFDCYLLKIKTDRRHSIYGYLTKPKKAGKYPVVLCPPGAGIKTIKEPMRSTFYAKNGFIRLEMEIHGLNPEMTDEQFKEITTAFDYENGYLTNGLDDRDNYYMKHVYVACVRAIDYLTSLPDWDGKNVFVQGGSQGGALSLVTAGLDPRVTACVANHPALSDMAGYLDNRAGGYPHFNRLKNMFTPEKVNTMAYYDVVNFARRITCPVYITWGYNDNVCPPTTSYIVWNLITAPKESLITPINEHWTTSETNYTQMLWLKKQVK'], 
         ['A0A0B8RHP0_LISMN', '2', 'MKKLLFLGDSVTDAGRDFENDRELGHGYVKIIADQLEQEDVTVINRGVSANRVADLHRRIEADAISLQPDVVTIMIGINDTWFSFSRWEDTSVTAFKEVYRVILNRIKTETNAELILMEPFVLPYPEDRKEWRGDLDPKIGAVRELAAEFGATLIPLDGLMNALAIKHGPTFLAEDGVHPTKAGHEAIASTWLEFTK']]
 df = pd.DataFrame(rows, columns=[id_col, label_col, seq_col])
-df << (EmbedESM(id_col, seq_col, extraction_method='mean', tmp_dir='tmp/') >> Save('tmp/esm2_test.pkl'))
-df << (EmbedESM(id_col, seq_col, extraction_method='active_site', active_site_col='ActiveSite', tmp_dir='tmp/') >> Save('tmp/esm2_test_active_site.pkl'))
+df = df << (EmbedESM(id_col, seq_col, extraction_method='mean', tmp_dir='./', rep_num=36) >> Save('tmp/esm2_test.pkl'))
+print(df)
+df = df << (EmbedESM(id_col, seq_col, extraction_method='active_site', active_site_col='ActiveSite', 
+                     tmp_dir='./', rep_num=36) >> Save('./esm2_test_active_site.pkl'))
+print(df)

@@ -12,4 +12,7 @@ substrate_col = 'Substrate'
 rows = [['P0DP23', 'MALWMRLLPLLALLALWGPDPAAAMALWMRLLPLLALLALWGPDPAAAMALWMRLLPLLALLALWGPDPAAA', 'CCCCC(CC)COC(=O)C1=CC=CC=C1C(=O)OCC(CC)CCCC'], 
         ['P0DP24', 'MALWMRLLPLLALLALWGPDPAAAMALWMRLLPLLALLALWGPDPAAAMALWMRLLPLLALLALWGPDPAAA', 'CCCCC(CC)COC(=O)C1=CC=CC=C1C(=O)OCC(CC)CCCC']]
 df = pd.DataFrame(rows, columns=[id_col, seq_col, substrate_col])
-df << (RxnFP(substrate_col, num_threads) >> Save(f'{output_dir}chemberta.pkl'))
+rxn = RxnFP(substrate_col, num_threads, tmp_dir=output_dir)
+rxn.venv = None
+df = rxn.execute(df) # >> Save(f'{output_dir}chemberta.pkl'))
+print(df)
