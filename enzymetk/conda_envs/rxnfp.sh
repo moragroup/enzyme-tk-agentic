@@ -8,10 +8,7 @@ conda create -n rxnfp --channel conda-forge python=3.10 pip -y
 conda activate rxnfp
 conda install -c rdkit rdkit=2020.03.3 -y
 conda install -c tmap tmap -y
-pip install setuptools==68.2.2 # for installing from git - doesn't install from pip as was never updated
-git clone https://github.com/rxn4chemistry/rxnfp.git
-conda install matplotlib freetype -c conda-forge -y # need this for 
-python setup.py install -y
+pip install rxnfp
 pip install numpy==1.23
 pip install rdkit
 pip install sciutil
