@@ -247,5 +247,95 @@ def list_tools():
     typer.echo("         python install.py --help")
 
 
+# ---------------------------------------------------------------------------
+# Agent sub-commands
+# ---------------------------------------------------------------------------
+
+agent_app = typer.Typer(
+    name="agent",
+    help="Agent tools for programmatic enzyme engineering workflows",
+    add_completion=False,
+)
+app.add_typer(agent_app, name="agent")
+
+
+@agent_app.command("list-tools")
+def agent_list_tools(
+    category: str = typer.Option(None, "--category", "-c", help="Filter by category"),
+):
+    """List all available agent tools."""
+    import enzymetk.agent.tools  # noqa: F401 – register tools
+    from enzymetk.agent.registry import ToolRegistry
+
+    tools = ToolRegistry.list_tools()
+    if category:
+        tools = [t for t in tools if t.category == category]
+
+    typer.secho("\nAvailable agent tools:\n", fg=typer.colors.BLUE, bold=True)
+    for t in tools:
+        name_str = typer.style(t.name, fg=typer.colors.GREEN, bold=True)
+        cat_str = typer.style(f"[{t.category}]", fg=typer.colors.YELLOW)
+        typer.echo(f"  {name_str:40} {cat_str:16} {t.description[:80]}")
+    typer.echo(f"\n  Total: {len(tools)} tools")
+
+
+@agent_app.command("run")
+def agent_run_tool(
+    tool_name: str = typer.Argument(..., help="Name of the tool to run"),
+    input_file: str = typer.Option(..., "--input", "-i", help="Path to input CSV or pickle file"),
+    output_dir: str = typer.Option(".", "--output-dir", "-o", help="Directory for results"),
+    extra_args: str = typer.Option("", "--args", "-a", help="JSON string of extra kwargs"),
+):
+    """Run a single agent tool from the command line."""
+    import json
+    import enzymetk.agent.tools  # noqa: F401
+    from enzymetk.agent.executor import execute_tool
+    import pandas as pd
+
+    if input_file.endswith(".pkl"):
+        df = pd.read_pickle(input_file)
+    else:
+        df = pd.read_csv(input_file)
+
+    kwargs = json.loads(extra_args) if extra_args else {}
+
+    # Convert DataFrame rows to the expected sequences format
+    if "Entry" in df.columns and "Sequence" in df.columns:
+        kwargs.setdefault("sequences", [
+            {"id": row["Entry"], "sequence": row["Sequence"]}
+            for _, row in df.iterrows()
+        ])
+
+    result = execute_tool(tool_name, **kwargs)
+    if result.success:
+        typer.secho(f"OK: {result.summary}", fg=typer.colors.GREEN)
+        typer.echo(f"Output: {result.output_path}")
+    else:
+        typer.secho(f"FAIL: {result.summary}", fg=typer.colors.RED)
+        raise typer.Exit(1)
+
+
+@agent_app.command("workflow")
+def agent_run_workflow(
+    name: str = typer.Argument("enzyme_discovery", help="Workflow name"),
+    output_dir: str = typer.Option(".", "--output-dir", "-o", help="Directory for results"),
+):
+    """Run a predefined workflow."""
+    from enzymetk.agent.workflow import enzyme_discovery_workflow
+
+    workflows = {
+        "enzyme_discovery": enzyme_discovery_workflow,
+    }
+    wf = workflows.get(name)
+    if wf is None:
+        typer.secho(f"Unknown workflow: {name}. Available: {list(workflows.keys())}", fg=typer.colors.RED)
+        raise typer.Exit(1)
+
+    result = wf.execute(output_dir=output_dir)
+    typer.echo(result.summary)
+    if not result.success:
+        raise typer.Exit(1)
+
+
 if __name__ == "__main__":
     app()

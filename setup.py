@@ -56,8 +56,13 @@ setup(name='enzymetk',
           'Programming Language :: Python :: 3.11',
           'Topic :: Scientific/Engineering :: Bio-Informatics',
       ],
-      keywords=['enzymes', 'protein-engineering'],
-      packages=['enzymetk'],
+      keywords=['enzymes', 'protein-engineering', 'langchain', 'agent'],
+      packages=[
+          'enzymetk',
+          'enzymetk.agent',
+          'enzymetk.agent.tools',
+          'enzymetk.langchain',
+      ],
       include_package_data=True,
       entry_points={
           'console_scripts': [
@@ -75,6 +80,15 @@ setup(name='enzymetk',
                         'torch',
                         'huggingface_hub', 
                         'rdkit', 
-                        'typer'],
+                        'typer',
+                        'pydantic>=2.0',
+                        'langchain-core>=0.2.0',
+                        'langchain>=0.2.0'],
+      extras_require={
+          'agent': [
+              'langchain-openai',
+              'langchain-anthropic',
+          ],
+      },
       data_files=[("", ["LICENSE"])]
       )

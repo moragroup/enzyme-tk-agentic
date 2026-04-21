@@ -119,4 +119,7 @@ __all__ = [
     'SubstrateDist',
     # Structure Search
     'StructureFoldSeek',
+    # Agent framework
+    'agent',
+    'langchain',
 ]
