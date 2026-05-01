@@ -13,6 +13,6 @@ rows = [['AXE2', 'MKIGSGEKLLFIGDSITDCGRARPEGEGSFGALGTGYVAYVVGLLQAVYPELGIRVVNKGIS
          'CCCCC(CC)COC(=O)C1=CC=CC=C1C(=O)OCC(CC)CCCC']]
 df = pd.DataFrame(rows, columns=[id_col, seq_col, substrate_col])
 # This should be relative to the location of the script if you installed via the install_all.sh script
-clean_dir = '/mnt/nfs/vol8t/home/amora/code/enzyme-tk/enzymetk/conda_envs/CLEAN/app/'
+clean_dir = '/mnt/labs/data/mora/code/enzymetk/enzyme-tk/enzymetk/conda_envs/CLEAN/app/'
 # Note! You cannot have underscores in the sample name (presumably no funky characters)
 output_df = (df << (CLEAN(id_col, seq_col, clean_dir, num_threads=1)))

@@ -32,6 +32,8 @@ class CLEAN(Step):
         self.ec2_filter = ec2_filter
         self.ec3_filter = ec3_filter
         self.ec4_filter = ec4_filter
+        self.conda = env_name
+        self.venv = None # uses conda cos of clean
 
     def __filter_df(self, df: pd.DataFrame) -> pd.DataFrame:
         # ------------- Separate out ECs ------------------
